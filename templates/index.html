@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Industry AI Usage Survey</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Tech Industry AI Usage Survey</h1>
+            
+            <form id="surveyForm" class="space-y-6">
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Which of the following best describes your job?</label>
+                            <select name="jobRole" class="w-full p-2 border rounded-md" required onchange="toggleOtherInput(this, 'jobRoleOther')">
+                                <option value="">Select an option</option>
+                                <option value="Backend developer">Backend developer</option>
+                                <option value="Frontend developer">Frontend developer</option>
+                                <option value="Project manager">Project manager</option>
+                                <option value="Devops Engineer">Devops Engineer</option>
+                                <option value="AI developer">AI developer</option>
+                                <option value="Cloud developer">Cloud developer</option>
+                                <option value="IoT engineer">IoT engineer</option>
+                                <option value="Prompt engineer">Prompt engineer</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div id="jobRoleOther" class="mt-2 hidden">
+                                <input type="text" name="jobRoleOther" class="w-full p-2 border rounded-md" placeholder="Please specify your job role">
+                            </div>
+                        </div>
+                        <button type="button" onclick="showChart('job-role')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">How long have you been working in the tech industry?</label>
+                            <select name="experienceYears" class="w-full p-2 border rounded-md" required>
+                                <option value="">Select an option</option>
+                                <option value="less than 1 year">Less than 1 year</option>
+                                <option value="1-2 years">1-2 years</option>
+                                <option value="2-5 years">2-5 years</option>
+                                <option value="5-10 years">5-10 years</option>
+                                <option value="10+ years">10+ years</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="showChart('experience')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Do you use AIs or LLMs when working?</label>
+                            <select name="usesAI" class="w-full p-2 border rounded-md" required>
+                                <option value="">Select an option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="showChart('uses-ai')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Which LLM do you primarily use?</label>
+                            <select name="primaryLLM" class="w-full p-2 border rounded-md" required onchange="toggleOtherInput(this, 'primaryLLMOther')">
+                                <option value="">Select an option</option>
+                                <option value="ChatGPT">ChatGPT</option>
+                                <option value="Cursor">Cursor</option>
+                                <option value="Claude">Claude</option>
+                                <option value="DeepSeek">DeepSeek</option>
+                                <option value="Co-Pilot">Co-Pilot</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div id="primaryLLMOther" class="mt-2 hidden">
+                                <input type="text" name="primaryLLMOther" class="w-full p-2 border rounded-md" placeholder="Please specify which LLM you use">
+                            </div>
+                        </div>
+                        <button type="button" onclick="showChart('primary-llm')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">What's your main usage of LLMs?</label>
+                            <select name="mainUsage" class="w-full p-2 border rounded-md" required onchange="toggleOtherInput(this, 'mainUsageOther')">
+                                <option value="">Select an option</option>
+                                <option value="Google or stackoverflow replacement">Google or stackoverflow replacement</option>
+                                <option value="Debugging">Debugging</option>
+                                <option value="Code completion">Code completion</option>
+                                <option value="Automated testing">Automated testing</option>
+                                <option value="Documentation generation">Documentation generation</option>
+                                <option value="Code reviews">Code reviews</option>
+                                <option value="Personalized learning">Personalized learning</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <div id="mainUsageOther" class="mt-2 hidden">
+                                <input type="text" name="mainUsageOther" class="w-full p-2 border rounded-md" placeholder="Please specify your main usage">
+                            </div>
+                        </div>
+                        <button type="button" onclick="showChart('main-usage')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Do you think AI tools have been mostly helpful or mostly harmful for juniors and students in the industry?</label>
+                            <select name="aiHelpfulForJunior" class="w-full p-2 border rounded-md" required>
+                                <option value="">Select an option</option>
+                                <option value="Helpful">Helpful</option>
+                                <option value="Harmful">Harmful</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="showChart('ai-helpful')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Has overall code quality within the industry went down since AI became popular?</label>
+                            <select name="codeQualityDown" class="w-full p-2 border rounded-md" required>
+                                <option value="">Select an option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="showChart('code-quality')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Do you think new developers are relying on AI too much?</label>
+                            <select name="relyingTooMuch" class="w-full p-2 border rounded-md" required>
+                                <option value="">Select an option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="showChart('relying-too-much')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-semibold mb-2">Do you think AI will eventually replace developers?</label>
+                            <select name="willReplaceDevs" class="w-full p-2 border rounded-md" required>
+                                <option value="">Select an option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="showChart('will-replace')" class="mt-8 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                            View Results
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                    Submit Response
+                </button>
+            </form>
+
+            <div id="successMessage" class="hidden mt-4 p-4 bg-green-100 text-green-700 rounded-md">
+                <p class="mb-4">Thank you for your response! Your answers have been recorded.</p>
+                <div class="mt-8">
+                    <h2 class="text-2xl font-bold mb-6">Survey Results</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">Job Roles Distribution</h3>
+                            <canvas id="jobRoleChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">Experience Level Distribution</h3>
+                            <canvas id="experienceChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">AI Usage Distribution</h3>
+                            <canvas id="usesAIChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">Primary LLM Distribution</h3>
+                            <canvas id="primaryLLMChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">Main Usage Distribution</h3>
+                            <canvas id="mainUsageChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">AI Helpfulness for Juniors</h3>
+                            <canvas id="aiHelpfulChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">Code Quality Impact</h3>
+                            <canvas id="codeQualityChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">Relying Too Much on AI</h3>
+                            <canvas id="relyingTooMuchChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3 class="text-lg font-semibold mb-2">AI Replacing Developers</h3>
+                            <canvas id="willReplaceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="hidden mt-4 p-4 bg-red-100 text-red-700 rounded-md">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for displaying charts -->
+    <div id="chartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="chartTitle" class="text-xl font-bold"></h2>
+                <button onclick="closeChart()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="chart-container" style="position: relative; height: 400px;">
+                <canvas id="chartCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChart = null;
+        const chartConfigs = {
+            'job-role': { canvasId: 'jobRoleChart', title: 'Job Roles Distribution' },
+            'experience': { canvasId: 'experienceChart', title: 'Experience Level Distribution' },
+            'uses-ai': { canvasId: 'usesAIChart', title: 'AI Usage Distribution' },
+            'primary-llm': { canvasId: 'primaryLLMChart', title: 'Primary LLM Distribution' },
+            'main-usage': { canvasId: 'mainUsageChart', title: 'Main Usage Distribution' },
+            'ai-helpful': { canvasId: 'aiHelpfulChart', title: 'AI Helpfulness for Juniors' },
+            'code-quality': { canvasId: 'codeQualityChart', title: 'Code Quality Impact' },
+            'relying-too-much': { canvasId: 'relyingTooMuchChart', title: 'Relying Too Much on AI' },
+            'will-replace': { canvasId: 'willReplaceChart', title: 'AI Replacing Developers' }
+        };
+
+        function initializeCharts() {
+            Object.entries(chartConfigs).forEach(([endpoint, config]) => {
+                fetch(`/api/stats/${endpoint}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.labels || !data.data || data.labels.length === 0) {
+                            throw new Error('No data available');
+                        }
+                        
+                        const canvas = document.getElementById(config.canvasId);
+                        const ctx = canvas.getContext('2d');
+                        new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: data.labels,
+                                datasets: [{
+                                    data: data.data,
+                                    backgroundColor: [
+                                        '#FF6384',
+                                        '#36A2EB',
+                                        '#FFCE56',
+                                        '#4BC0C0',
+                                        '#9966FF',
+                                        '#FF9F40',
+                                        '#8AC24A',
+                                        '#FF5252',
+                                        '#7E57C2'
+                                    ]
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'right'
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error(`Error loading chart for ${endpoint}:`, error);
+                        const container = document.getElementById(config.canvasId).parentNode;
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'text-red-500 mt-4';
+                        errorDiv.textContent = 'Failed to load data';
+                        container.appendChild(errorDiv);
+                    });
+            });
+        }
+
+        function showChart(endpoint) {
+            const modal = document.getElementById('chartModal');
+            const canvas = document.getElementById('chartCanvas');
+            const title = document.getElementById('chartTitle');
+            
+            // Set title based on endpoint
+            const titles = {
+                'job-role': 'Job Roles Distribution',
+                'experience': 'Experience Level Distribution',
+                'uses-ai': 'AI Usage Distribution',
+                'primary-llm': 'Primary LLM Distribution',
+                'main-usage': 'Main Usage Distribution',
+                'ai-helpful': 'AI Helpfulness for Juniors',
+                'code-quality': 'Code Quality Impact',
+                'relying-too-much': 'Relying Too Much on AI',
+                'will-replace': 'AI Replacing Developers'
+            };
+            title.textContent = titles[endpoint];
+
+            // Destroy previous chart if it exists
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            // Show loading state
+            title.textContent = 'Loading...';
+            modal.classList.remove('hidden');
+
+            // Fetch data and create chart
+            fetch(`/api/stats/${endpoint}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Received data:', data);
+                    if (!data.labels || !data.data || data.labels.length === 0) {
+                        throw new Error('No data available');
+                    }
+                    
+                    title.textContent = titles[endpoint];
+                    const ctx = canvas.getContext('2d');
+                    currentChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                data: data.data,
+                                backgroundColor: [
+                                    '#FF6384',
+                                    '#36A2EB',
+                                    '#FFCE56',
+                                    '#4BC0C0',
+                                    '#9966FF',
+                                    '#FF9F40',
+                                    '#8AC24A',
+                                    '#FF5252',
+                                    '#7E57C2'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'right'
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching chart data:', error);
+                    title.textContent = 'Error Loading Data';
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'text-red-500 mt-4';
+                    errorDiv.textContent = 'Failed to load data. Please try again later.';
+                    canvas.parentNode.appendChild(errorDiv);
+                });
+        }
+
+        function closeChart() {
+            const modal = document.getElementById('chartModal');
+            modal.classList.add('hidden');
+            if (currentChart) {
+                currentChart.destroy();
+                currentChart = null;
+            }
+        }
+
+        function resetForm() {
+            // Remove this function since we don't need it anymore
+        }
+
+        // Check if user has already submitted
+        if (localStorage.getItem('surveySubmitted')) {
+            document.getElementById('surveyForm').style.display = 'none';
+            document.getElementById('successMessage').classList.remove('hidden');
+            initializeCharts();
+        }
+
+        function toggleOtherInput(selectElement, otherInputId) {
+            const otherInput = document.getElementById(otherInputId);
+            if (selectElement.value === 'Others') {
+                otherInput.classList.remove('hidden');
+                otherInput.querySelector('input').required = true;
+            } else {
+                otherInput.classList.add('hidden');
+                otherInput.querySelector('input').required = false;
+            }
+        }
+
+        document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Store the specific "Others" responses separately
+            const otherResponses = {};
+            if (data.jobRole === 'Others' && data.jobRoleOther) {
+                otherResponses.jobRoleOther = data.jobRoleOther;
+            }
+            if (data.primaryLLM === 'Others' && data.primaryLLMOther) {
+                otherResponses.primaryLLMOther = data.primaryLLMOther;
+            }
+            if (data.mainUsage === 'Others' && data.mainUsageOther) {
+                otherResponses.mainUsageOther = data.mainUsageOther;
+            }
+
+            // Remove the "Other" fields from the data
+            delete data.jobRoleOther;
+            delete data.primaryLLMOther;
+            delete data.mainUsageOther;
+
+            // Add the other responses to the data
+            Object.assign(data, otherResponses);
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+
+                // Store submission status in local storage
+                localStorage.setItem('surveySubmitted', 'true');
+                
+                document.getElementById('surveyForm').style.display = 'none';
+                document.getElementById('successMessage').classList.remove('hidden');
+                document.getElementById('errorMessage').classList.add('hidden');
+                
+                // Initialize charts after successful submission
+                initializeCharts();
+            } catch (error) {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = error.message;
+                errorMessage.classList.remove('hidden');
+                document.getElementById('successMessage').classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html> 

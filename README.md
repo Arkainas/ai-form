@@ -130,7 +130,3 @@ To view logs:
 ```bash
 journalctl -u survey-app -f
 ```
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. 

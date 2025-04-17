@@ -2,6 +2,11 @@
 
 A simple web-based survey application that collects responses about AI usage in the tech industry. The application is built with Go for the backend and uses HTML/JavaScript with Tailwind CSS for the frontend.
 
+## Goals
+
+The creator of this project is writing his thesis on AI/LLMs and how it currently affects developers, and how it will affect developers in the future.
+This form will be deployed and posted to websites like Linkedin, discord and reddit. Mostly as a testiment to the owners ability after 2 years of education in web-development.
+
 ## Features
 
 - Survey form with multiple-choice questions
